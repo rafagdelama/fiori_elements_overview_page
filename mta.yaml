@@ -1,0 +1,93 @@
+_schema-version: "3.2"
+ID: ovp
+version: 0.0.1
+modules:
+- name: ovp-destination-content
+  type: com.sap.application.content
+  requires:
+  - name: ovp-destination-service
+    parameters:
+      content-target: true
+  - name: ovp_html_repo_host
+    parameters:
+      service-key:
+        name: ovp_html_repo_host-key
+  - name: uaa_ovp
+    parameters:
+      service-key:
+        name: uaa_ovp-key
+  parameters:
+    content:
+      instance:
+        destinations:
+        - Name: ovp_ovp_html_repo_host
+          ServiceInstanceName: ovp-html5-app-host-service
+          ServiceKeyName: ovp_html_repo_host-key
+          sap.cloud.service: ovp
+        - Authentication: OAuth2UserTokenExchange
+          Name: ovp_uaa_ovp
+          ServiceInstanceName: ovp-xsuaa-service
+          ServiceKeyName: uaa_ovp-key
+          sap.cloud.service: ovp
+        existing_destinations_policy: ignore
+  build-parameters:
+    no-source: true
+- name: ovp-app-content
+  type: com.sap.application.content
+  path: .
+  requires:
+  - name: ovp_html_repo_host
+    parameters:
+      content-target: true
+  build-parameters:
+    build-result: resources
+    requires:
+    - artifacts:
+      - ovp.zip
+      name: ovp
+      target-path: resources/
+- name: ovp
+  type: html5
+  path: ovp
+  build-parameters:
+    build-result: dist
+    builder: custom
+    commands:
+    - npm install
+    - npm run build:cf
+    supported-platforms: []
+resources:
+- name: ovp-destination-service
+  type: org.cloudfoundry.managed-service
+  parameters:
+    config:
+      HTML5Runtime_enabled: true
+      init_data:
+        instance:
+          destinations:
+          - Authentication: NoAuthentication
+            Name: ui5
+            ProxyType: Internet
+            Type: HTTP
+            URL: https://ui5.sap.com
+          existing_destinations_policy: update
+      version: 1.0.0
+    service: destination
+    service-name: ovp-destination-service
+    service-plan: lite
+- name: ovp_html_repo_host
+  type: org.cloudfoundry.managed-service
+  parameters:
+    service: html5-apps-repo
+    service-name: ovp-html5-app-host-service
+    service-plan: app-host
+- name: uaa_ovp
+  type: org.cloudfoundry.managed-service
+  parameters:
+    path: ./xs-security.json
+    service: xsuaa
+    service-name: ovp-xsuaa-service
+    service-plan: application
+parameters:
+  deploy_mode: html5-repo
+  enable-parallel-deployments: true

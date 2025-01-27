@@ -1,0 +1,50 @@
+specVersion: "3.1"
+metadata:
+  name: ovp
+type: application
+server:
+  customMiddleware:
+    - name: fiori-tools-proxy
+      afterMiddleware: compression
+      configuration:
+        ignoreCertError: false
+        ui5:
+          path:
+            - /resources
+            - /test-resources
+          url: https://ui5.sap.com
+        backend:
+          - path: /sap
+            url: http://s4h22.sap4practice.com:8007
+            destination: S4HANA_22
+          - path: /v2/northwind/northwind.svc
+            url: https://services.odata.org
+            destination: Northwind
+            authenticationType: NoAuthentication
+    - name: fiori-tools-appreload
+      afterMiddleware: compression
+      configuration:
+        port: 35729
+        path: webapp
+        delay: 300
+    - name: fiori-tools-preview
+      afterMiddleware: fiori-tools-appreload
+      configuration:
+        component: ovp
+        ui5Theme: sap_horizon
+    - name: sap-fe-mockserver
+      beforeMiddleware: csp
+      configuration:
+        mountPath: /
+        services:
+          - urlPath: /sap/opu/odata/sap/SEPMRA_SO_ANA
+            generateMockData: true
+            metadataXmlPath: ./webapp/localService/SEPMRA_SO_ANA/metadata.xml
+            mockdataRootPath: ./webapp/localService/data
+          - urlPath: /v2/northwind/northwind.svc
+            metadataPath: ./webapp/localService/northwind/metadata.xml
+            mockdataPath: ./webapp/localService/northwind/mockdata
+            generateMockData: true
+        annotations:
+          - localPath: ./webapp/annotations/sepmra_so_ana.xml
+            urlPath: annotations/sepmra_so_ana.xml
