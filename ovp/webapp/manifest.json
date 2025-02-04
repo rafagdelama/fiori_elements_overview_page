@@ -73,7 +73,7 @@
     "sap.ui5": {
         "flexEnabled": true,
         "dependencies": {
-            "minUI5Version": "1.132.0",
+            "minUI5Version": "1.120.0",
             "libs": {
                 "sap.m": {},
                 "sap.ui.core": {},
@@ -137,7 +137,99 @@
         "containerLayout": "resizable",
         "enableLiveFilter": true,
         "considerAnalyticalParameters": false,
-        "cards": {},
+        "cards": {
+            "products-SO":{
+                "model": "sepmra_so_ana",
+                "template":"sap.ovp.cards.list",
+                "settings": {
+                    "title": "{{Products}}",
+                    "subTitle": "{{SEPMRA_SO_ANA}}",
+                    "entitySet": "SEPMRA_C_ALP_Product",
+                    "listFlavor": "standard",
+                    "listType": "extended",
+                    "annotationPath": "com.sap.vocabularies.UI.v1.LineItem#LineItemSO",
+                    "dataPointAnnotationPath": "com.sap.vocabularies.UI.v1.DataPoint#QDataPointSO",
+                    "selectionAnnotationPath": "com.sap.vocabularies.UI.v1.SelectionVariant#SelectionVariantSO",
+                    "presentationAnnotationPath": "com.sap.vocabularies.UI.v1.PresentationVariant#PresentationVariantSO"
+
+                }
+  
+            },
+            "products-Northwind":{
+                "model": "northwind",
+                "template":"sap.ovp.cards.list",
+                "settings": {
+                    "title": "{{Products}}",
+                    "subTitle": "{{NORTHWIND}}",
+                    "entitySet": "Products",
+                    "listFlavor": "standard",
+                    "listType": "extended",
+                    "annotationPath": "com.sap.vocabularies.UI.v1.LineItem#LineItemNorthwind"
+
+     
+
+                } 
+            },
+            "SalesOrder-SO":{
+                "model": "sepmra_so_ana",
+                "template":"sap.ovp.cards.list",
+                "settings": {
+                    "title": "{{SalesOrder}}",
+                    "subTitle": "{{SEPMRA_SO_ANA}}",
+                    "entitySet": "SEPMRA_C_ALP_SalesOrder",
+                    "listFlavor": "standard",
+                    "listType": "condensed",
+                    "annotationPath": "com.sap.vocabularies.UI.v1.LineItem#LineItem_sales_order",
+                    "selectionAnnotationPath": "com.sap.vocabularies.UI.v1.SelectionVariant#SVariant_sales_orders",
+                    "presentationAnnotationPath": "com.sap.vocabularies.UI.v1.PresentationVariant#PresentatioVarianSalesOrder"
+     
+
+                } 
+            } ,
+            "Users-SO":{
+                "model": "sepmra_so_ana",
+                "template":"sap.ovp.cards.stack",
+                "settings": {
+                    "title": "{{Users}}",
+                    "subTitle": "{{SEPMRA_SO_ANA}}",
+                    "entitySet": "SEPMRA_C_ALP_User",
+                    "identificationAnnotationPath": "com.sap.vocabularies.UI.v1.Identification#Identification_SO",
+                    "objectStreamCardsSettings": {
+                        "annotationPath":"com.sap.vocabularies.UI.v1.Facets#Facets_SO"
+                    }
+    
+
+                } 
+            }, 
+            "Customers-SO":{
+                "model": "sepmra_so_ana",
+                "template":"sap.ovp.cards.linklist",
+                "settings": {
+                    "title": "{{Customers}}",
+                    "subTitle": "{{SEPMRA_SO_ANA}}",
+                    "entitySet": "SEPMRA_C_ALP_Customer",
+                    "listFlavor": "standard",
+                    "sortBy": "Customer",
+                    "sortOrder": "descending",
+                    "headerAnnotationPath":"com.sap.vocabularies.UI.v1.HeaderInfo#HeaderInfo_SO"
+              
+                } 
+            },
+            "Charts-SO":{
+                "model": "sepmra_so_ana",
+                "template":"sap.ovp.cards.charts.analytical",
+                "settings": {
+                    "title": "{{Charts}}",
+                    "subTitle": "{{SEPMRA_SO_ANA}}",
+                    "entitySet": "SEPMRA_C_ALP_SlsOrdItemCube",
+                    "listFlavor": "standard",
+                    "chartAnnotationPath": "com.sap.vocabularies.UI.v1.Chart#Chart_SO",
+                    "presentationAnnotationPath": "com.sap.vocabularies.UI.v1.PresentationVariant#PresentationVariantChartSO"
+              
+                } 
+            }
+                   
+        },
         "chartSettings": {}
     },
     "sap.fiori": {
